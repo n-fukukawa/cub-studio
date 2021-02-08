@@ -40,7 +40,7 @@ class UserController extends Controller
      */
     public function edit(Request $request, User $user)
     {
-        if($user->id !== Auth::user()){
+        if($user->id !== Auth::id()){
             abort(403);
         }
 
@@ -60,7 +60,7 @@ class UserController extends Controller
     */
     public function update(Request $request, User $user)
     {
-        if($user->id !== Auth::user()){
+        if($user->id !== Auth::id()){
             abort(403);
         }
             $request->validate([
