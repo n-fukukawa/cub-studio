@@ -20,7 +20,7 @@
         </div>
         <div class="mb-6 flex">
             <input type="checkbox" id="remember_me" name="remember" v-model="registerForm.remember" checked class="self-center mr-2 text-sm text-blue-dark rounded focus:ring-1 focus:ring-blue-dark focus:outline-none">
-            <my-label for="remember_me">サインイン情報を記憶する</my-label>
+            <my-label for="remember_me">ログイン情報を記憶する</my-label>
         </div>
         <my-button type="submit" class="text-shadow" color="blue-dark">登録</my-button>
     </form>
