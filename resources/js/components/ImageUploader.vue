@@ -90,7 +90,7 @@ export default {
                     self.$store.commit('setLoading', false)
                 }
                 fileReader.readAsDataURL( blob )
-            }, 'image/jpeg', 0.5);
+            }, 'image/jpeg', 0.3);
 
             //このモーダルを閉じる
             this.$emit('close');
