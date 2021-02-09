@@ -31,11 +31,11 @@
 
 		<!-- いいねボタン、ユーザー  -->
 			<div class="flex mt-2">
-				<like-button class="flex-grow" :post="post" :initial-liked="post.is_liked" :initial-count="likes.length"/>
-				<router-link :to="'/user/' + user.id" class="flex mr-2 place-items-center">
+				<router-link :to="'/user/' + user.id" class="flex flex-grow mr-2 mb-2 items-end">
 					<img :src="image" class="w-8 h-8 mr-2 rounded-full border border-gray-200">
 					<p class="text-base tracking-wide">{{ user.name }}</p>
 				</router-link>
+				<like-button :post="post" :initial-liked="post.is_liked" :initial-count="likes.length"/>
 			</div>
 		</div>
 
@@ -53,13 +53,10 @@
 	</post-layout>
 
 	<!-- いいねしたユーザー一覧 -->
-
-	
-
     <div v-if="likes.length" class="my-8 sm:w-3/4 sm:mx-auto">
 		<div class="flex place-items-center">
 			<p class="flex-grow border-b"></p>
-			<p class="px-6 text-center text-sm tracking-widest">いいねしたユーザー</p>
+			<p class="px-6 text-center text-sm tracking-widest">YAEH!したユーザー</p>
 			<p class="flex-grow border-b"></p>
 		</div>
         <div class="mt-2 sm:mt-20 sm:gap-1 divide-y">
