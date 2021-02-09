@@ -156,7 +156,7 @@
 			async onDelete(){
 				await axios.delete('/api/post/' + this.post.id)
 					.then(response => {
-						this.$router.go(-1)
+						this.$router.push('/')
 					})
 					.catch(error => {
 						this.$store.commit('error/setErrorCode', error.response.status)
