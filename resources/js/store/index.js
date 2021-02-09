@@ -10,15 +10,11 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
       loading: false,
-      keyForRender: 0,
   },
   mutations: {
       setLoading(state, loading){
           state.loading = loading
       },
-      forceRender(state){
-          state.KeyForRender++
-      }
   },
   modules: {
       auth,
