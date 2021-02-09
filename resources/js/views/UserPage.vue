@@ -4,18 +4,18 @@
         <div class="p-8">
         <!-- プロフィール写真 -->
             <div class="mb-4 flex justify-center">
-                <img :src="'/storage/' + user.image" alt="" class="h-48 w-48 rounded-full border-2 border-gray-200 shadow-inner">
+                <img :src="image" alt="" class="h-48 w-48 rounded-full border border-gray-400 shadow-inner">
             </div>
         <!-- ユーザーネーム -->
-            <div class="mb-2 flex justify-center place-items-center items-center font-bold text-base sm:text-base flex-grow">
-                <router-link :to="'/user/' + user.id" class="text-lg tracking-wider" :class="{'pl-4' :mine}">{{ user.name }}</router-link>
-                <router-link v-if="mine" :to="'/user/' + user.id + '/edit'" class="text-sm"><i class="fas fa-pen ml-2 text-gray-400"></i></router-link>
+            <div class="mb-4 flex justify-center place-items-center items-center font-bold text-base sm:text-base flex-grow">
+                <router-link :to="'/user/' + user.id" class="text-lg tracking-wider" :class="{'pl-6' :mine}">{{ user.name }}</router-link>
+                <router-link v-if="mine" :to="'/user/' + user.id + '/edit'" class="text-sm"><i class="fas fa-pen ml-3 text-lg text-gray-400"></i></router-link>
             </div>        
         <!-- フォローボタン -->
             <follow-button v-if="!mine" :user="user" :initial-followed="user.isFollowed" class="flex justify-center mb-4" />
         <!-- ログアウト -->
-            <div class="flex justify-center mb-4">
-                <button v-if="mine" @click="logout" class="text-sm text-gray-500 focus:outline-none hover:underline">ログアウト</button>
+            <div class="flex justify-center mb-6">
+                <button v-if="mine" @click="logout" class="text-sm text-blue-dark focus:outline-none hover:underline">ログアウト</button>
             </div>
 
             <div class="mb-2 border-t border-gray-300"></div>
@@ -130,6 +130,12 @@ export default {
             return this.$store.state.auth.user
                 ? this.$store.state.auth.user.id === this.user.id
                 : false
+        },
+
+        image(){
+            return this.user.image 
+                ? '/storage/' + this.user.image
+                : '/img/noimage.png'
         }
     },
 

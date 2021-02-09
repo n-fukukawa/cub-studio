@@ -4,27 +4,27 @@
 
     <!-- ヘッダーロゴ -->  
         <div class="flex-grow">
-            <a href="/" class="font-logo tracking-wider">CubStudio.</a>
+            <router-link to="/" class="font-logo tracking-wider">CubStudio.</router-link>
         </div>
 
     <!-- 認証ユーザー -->
         <div v-if="isAuthenticated">
             <!--ウィンドウサイズsm未満-->
-            <div class="sm:hidden flex h-10 place-items-center space-x-2">
-                <router-link to="/post/create"><i class="fas fa-edit p-1 text-blue-dark text-2xl"></i></router-link>
-                <router-link :to="'/user/' + user.id"><img :src="'/storage/' + user.image" class="h-8 w-8 rounded-full border border-gray-500 shadow-inner"></router-link>
+            <div class="sm:hidden flex h-10 place-items-center space-x-3">
+                <router-link to="/post/create"><i class="far fa-plus-square p-1 text-gray-600 text-3xl"></i></router-link>
+                <router-link :to="'/user/' + user.id"><img :src="image" class="h-8 w-8 rounded-full border-2 border-gray-600 shadow-inner"></router-link>
             </div>
             <!--ウィンドウサイズsm以上-->
             <div class="hidden sm:flex h-10 place-items-center text-sm space-x-4">
-                <router-link to="/post/create"><i class="fas fa-edit p-1 text-blue-dark text-2xl"></i></router-link>
-                <router-link :to="'/user/' + user.id"><img :src="'/storage/' + user.image" class="h-8 w-8 rounded-full border border-gray-500 shadow-inner"></router-link>
+                <router-link to="/post/create"><i class="far fa-plus-square p-1 text-gray-600 text-3xl"></i></router-link>
+                <router-link :to="'/user/' + user.id"><img :src="image" class="h-8 w-8 rounded-full border-2 border-gray-600 shadow-inner"></router-link>
             </div>
         </div>
 
     <!-- ゲスト -->
         <div v-else>
             <!--ウィンドウサイズsm未満-->
-            <div class="sm:hidden flex h-10 place-items-center text-sm space-x-2">
+            <div class="sm:hidden flex h-10 place-items-center text-sm space-x-3">
                 <router-link to="/login">ログイン</router-link>
                 <router-link to="/register">新規登録</router-link>
             </div>
@@ -47,7 +47,14 @@
 
             isAuthenticated(){
                 return this.$store.getters['auth/isAuthenticated']
+            },
+
+            image(){
+                return this.user.image 
+                    ? '/storage/' + this.user.image
+                    : '/img/noimage.png'
             }
+
         },
     }
 </script>

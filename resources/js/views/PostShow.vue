@@ -33,7 +33,7 @@
 			<div class="flex mt-2">
 				<like-button class="flex-grow" :post="post" :initial-liked="post.is_liked" :initial-count="likes.length"/>
 				<router-link :to="'/user/' + user.id" class="flex mr-2 place-items-center">
-					<img :src="'/storage/' + user.image" class="w-8 h-8 mr-2 rounded-full border border-gray-200">
+					<img :src="image" class="w-8 h-8 mr-2 rounded-full border border-gray-200">
 					<p class="text-base tracking-wide">{{ user.name }}</p>
 				</router-link>
 			</div>
@@ -53,29 +53,24 @@
 	</post-layout>
 
 	<!-- いいねしたユーザー一覧 -->
-	<div class="my-8 sm:w-3/4 sm:mx-auto">
+
 	
+
+    <div v-if="likes.length" class="my-8 sm:w-3/4 sm:mx-auto">
 		<div class="flex place-items-center">
 			<p class="flex-grow border-b"></p>
 			<p class="px-6 text-center text-sm tracking-widest">いいねしたユーザー</p>
 			<p class="flex-grow border-b"></p>
 		</div>
-
-		<div class="sm:grid sm:grid-cols-2 sm:space-x-8">
-			<div v-for="person in likes" :key="person.id" class="sm:cols-span-1">
-				<router-link :to="'/user/' + person.id" class="flex place-items-center py-4 pl-2 pr-4 border-b">
-					<img :src="'/storage/' + person.image" alt="" class="h-8 w-8 rounded-full border border-gray-200 shadow-inner">
-					<div class="ml-2 text-sm sm:text-base flex-grow">
-						{{ person.name }}
-					</div>
-				</router-link>
-			</div>
-		</div>
-	</div>
+        <div class="mt-2 sm:mt-20 sm:gap-1 divide-y">
+            <user-card v-for="person in likes" :user="person" :key="person.id"/>
+        </div>
+    </div>
 </div>
 </template>
 <script>
     import PostLayout from '../layouts/PostLayout'
+    import UserCard from '../components/UserCard'
     import MyModal from '../components/MyModal'
     import LikeButton from '../components/LikeButton'
     import MyButton from '../components/MyButton'
@@ -83,6 +78,7 @@
 	export default {
         components: {
             PostLayout,
+            UserCard,
             MyModal,
             LikeButton,
             MyButton,
@@ -139,6 +135,13 @@
         	date() {
             	return String(this.post.created_at).substr(0,10)
 			},
+
+			//ユーザー画像
+			image(){
+				return this.user.image 
+					? '/storage/' + this.user.image
+					: '/img/noimage.png'
+			}
 		},
 
 		methods: {

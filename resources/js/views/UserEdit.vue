@@ -4,7 +4,7 @@
 
         <!-- 画像を表示（クリックでファイルを選択） -->
             <label for="upload" class="flex place-items-center justify-center mt-2">
-                <img :src="'/storage/' + user.image" v-if="!croppedImage" class="w-48 h-48 mb-4 mx-auto rounded-full border-2 border-gray-200 bg-gray-100 transition-all hover:opacity-80">
+                <img :src="image" v-if="!croppedImage" class="w-48 h-48 mb-4 mx-auto rounded-full border-2 border-gray-200 bg-gray-100 transition-all hover:opacity-80">
                 <input v-show="false" @click="clear" @change="upload" id="upload" type="file" ref="file">
             </label>
 
@@ -17,6 +17,10 @@
         </template>
         
         <template #right>
+            <div class="w-1/2 mx-auto font-bold text-base">
+                <my-input v-model="name" placeholder="半角英数字15文字以内" class="border tracking-wider">{{ user.name }}</my-input>
+            </div>        
+
             <div class="mt-4 mx-2 sm:mt-0">
                 <label for="introduction" class="block text-gray-600 mb-2">自己紹介文<span class="taxt-xs">（100文字以内）</span></label>
                 <my-textarea v-model="introduction"></my-textarea>
@@ -34,7 +38,7 @@
 import PostLayout from '../layouts/PostLayout'
 import ImageUploader from '../components/ImageUploader'
 import MyButton from '../components/MyButton'
-import LoadingComponent from '../components/LoadingComponent'
+import MyInput from '../components/MyInput'
 import MyTextarea from '../components/MyTextarea'
 import MyModal from '../components/MyModal'
 
@@ -43,7 +47,7 @@ export default {
         PostLayout,
         ImageUploader,
         MyButton,
-        LoadingComponent,
+        MyInput,
         MyTextarea,
         MyModal,
     },
@@ -58,7 +62,8 @@ export default {
         await axios.get('/api/user/' + this.id + '/edit')
         .then(response => {
             this.user = response.data.user
-            this.introduction = this.user.introduction
+            this.name = this.user.name
+            this.introduction = this.user.introduction ?? ''
         })
         .catch(error => {
             this.$store.commit('error/setErrorCode', error.response.status)
@@ -74,6 +79,7 @@ export default {
     data() {
         return {
             user: {},
+            name: '',
             introduction: '',
             modal: false,
         }
@@ -85,6 +91,13 @@ export default {
         croppedImage() {
             return this.$store.state.image.croppedImage
         },
+
+        //ユーザー画像
+        image(){
+            return this.user.image 
+                ? '/storage/' + this.user.image
+                : '/img/noimage.png'
+        }
     },
 
     methods: {
@@ -130,6 +143,7 @@ export default {
 
         submit() {
             let formData = new FormData();
+            formData.append("name", this.name);
             formData.append("introduction", this.introduction);
             formData.append("image",　this.$store.state.image.blob)
 
