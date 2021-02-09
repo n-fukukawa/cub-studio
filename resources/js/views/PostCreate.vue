@@ -128,7 +128,7 @@ export default {
 
         //フォーム送信
         async submit(){
-            // this.$store.commit('setLoading', true)
+            this.$store.commit('setLoading', true)
             let formData = new FormData()
             formData.append("title", this.postForm.title)
             formData.append("departure", this.postForm.departure)
@@ -147,7 +147,7 @@ export default {
                     this.$store.commit('error/setErrorMessages', error.response.data.errors)
                 })
                 .finally(() => {
-                    // this.$store.commit('setLoading', false)
+                    this.$store.commit('setLoading', false)
                 })
         },
     }
