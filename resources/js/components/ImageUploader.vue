@@ -1,5 +1,5 @@
 <template>
-<div @click.self="$emit('close')" class="fixed w-full h-full top-0 left-0 z-40 flex items-center justify-center bg-black bg-opacity-80 rounded">
+<div @click.self="$emit('close')" class="fixed w-full h-full top-0 left-0 z-50 flex items-center justify-center bg-black bg-opacity-80 rounded">
     <div class="overflow-hidden bg-black mx-2">
 
         <div class="relative flex items-center justify-center">
