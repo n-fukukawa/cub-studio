@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
+use App\Rules\alpha_num_check;
 
 class UserController extends Controller
 {
@@ -63,18 +64,26 @@ class UserController extends Controller
         if($user->id !== Auth::id()){
             abort(403);
         }
+
+        if($user->name !== $request->name){
             $request->validate([
-                'introduction' => 'nullable|string|max:100',
+                'name' => ['required', new alpha_num_check, 'unique:users', 'max:15'],
+            ]);
+        }
+        $request->validate([
+            'introduction' => 'nullable|string|max:100',
+        ]);
+
+        if($request->file('image')){
+            $request->validate([
+                'image' => 'file|mimes:jpg,png|max:10240',
             ]);
 
-            if($request->file('image')){
-                $request->validate([
-                    'image' => 'file|mimes:jpg,png|max:10240',
-                ]);
-
-                Storage::disk('public')->delete($user->image);  //元の画像は削除
-                $user->image = Storage::disk('public')->putFile('profiles', $request->file('image'));
-            }
+            Storage::disk('public')->delete($user->image);  //元の画像は削除
+            $user->image = Storage::disk('public')->putFile('profiles', $request->file('image'));
+        }
+        
+            $user->name = $request->name;
             $user->introduction = $request->introduction;
             $user->save();
     }
