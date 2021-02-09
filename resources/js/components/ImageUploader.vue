@@ -55,6 +55,10 @@ export default {
         uploadImage() {
             return this.$store.state.image.uploadImage
         },
+
+        blob() {
+            return this.$store.state.image.blob
+        },
         
         //画面サイズに応じて、vueCropperのコンテナサイズを決定
         sizeX() {
@@ -70,21 +74,27 @@ export default {
     },
 
     methods: {
-        async crop(){
-            // this.$store.commit('setLoading', true)
+        crop(){
+            this.$store.commit('setLoading', true)
 
-            //トリミングされた画像データURLをストアに保存
-            let croppedImage = this.$refs.cropper.getCroppedCanvas().toDataURL();
-            this.$store.commit('image/setCroppedImage', croppedImage);
+            let self = this
 
             //トリミングされた画像をBlobに変換してストアに保存
-            await this.$refs.cropper.getCroppedCanvas().toBlob(blob => {
-                this.$store.commit('image/setBlob', blob);
-                // this.$store.commit('setLoading', false)
-            });
+            this.$refs.cropper.getCroppedCanvas().toBlob(blob => {
+                self.$store.commit('image/setBlob', blob)
+
+            //プレビューのためのトリミング後の画像を、DataURLに変換して取得
+                let fileReader = new FileReader()
+                fileReader.onload = function() {
+                    self.$store.commit('image/setCroppedImage', this.result)
+                    self.$store.commit('setLoading', false)
+                }
+                fileReader.readAsDataURL( blob )
+            })
 
             //このモーダルを閉じる
             this.$emit('close');
+
         },
 
         //画像を削除
